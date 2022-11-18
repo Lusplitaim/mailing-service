@@ -1,20 +1,28 @@
 <div class="row">
     <div class="form-signin col-md-6 offset-md-3 text-center">
-        <form [formGroup]="signUpForm" (ngSubmit)="signUpForm.valid">
-            <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <form [formGroup]="signUpForm" (ngSubmit)="createUser()">
             <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
             <div class="form-floating form-group p-1">
                 <input type="text" formControlName="name" class="form-control" id="name" placeholder="name">
                 <label for="name">Name</label>
+                <div class="text-danger" *ngIf="signUpForm.controls['name'].invalid && signUpForm.controls['name'].touched">
+                    Enter name
+                </div>
             </div>
             <div class="form-floating form-group p-1">
                 <input type="email" formControlName="email" class="form-control" id="email" placeholder="mail@example.com">
                 <label for="email">Email</label>
+                <div class="text-danger" *ngIf="signUpForm.controls['email'].invalid && signUpForm.controls['email'].touched">
+                    Enter email
+                </div>
             </div>
             <div class="form-floating form-group p-1">
                 <input type="password" formControlName="password" class="form-control" id="password" placeholder="Password">
                 <label for="password">Password</label>
+                <div class="text-danger" *ngIf="signUpForm.controls['password'].invalid && signUpForm.controls['password'].touched">
+                    Enter password
+                </div>
             </div>
 
             <button class="w-100 btn btn-lg btn-primary p-1" [disabled]="signUpForm.invalid" type="submit">Sign up</button>

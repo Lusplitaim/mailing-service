@@ -21,4 +21,8 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  createUser() {
+    console.log(this.signUpForm.value);
+  }
+
 }
