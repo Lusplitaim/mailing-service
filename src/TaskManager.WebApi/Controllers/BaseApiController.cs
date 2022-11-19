@@ -6,10 +6,7 @@ namespace TaskManager.WebApi.Controllers;
 [Route("[controller]/[action]")]
 public class BaseApiController : ControllerBase
 {
-    protected readonly ILogger<BaseApiController> _logger;
-
-    public BaseApiController(ILogger<BaseApiController> logger)
+    public BaseApiController()
     {
-        _logger = logger;
     }
 }
