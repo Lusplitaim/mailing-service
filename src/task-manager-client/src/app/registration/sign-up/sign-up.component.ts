@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RegistrationService } from 'src/app/services/registration.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,7 +11,8 @@ export class SignUpComponent implements OnInit {
 
   signUpForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { 
+  constructor(private formBuilder: FormBuilder,
+    private regService: RegistrationService) { 
     this.signUpForm = this.formBuilder.group({
       name: [null, [Validators.required] ],
       email: [null, [Validators.required, Validators.email] ],
@@ -22,7 +24,9 @@ export class SignUpComponent implements OnInit {
   }
 
   createUser() {
-    console.log(this.signUpForm.value);
+    this.regService.createUser(this.signUpForm.value).subscribe((user) => {
+      console.log(user);
+    });
   }
 
 }
