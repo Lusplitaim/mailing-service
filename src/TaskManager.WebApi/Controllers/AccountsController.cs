@@ -19,8 +19,6 @@ namespace TaskManager.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> SignIn([FromBody] SignInUserDto signInDto)
         {
-            _context.Connect();
-
             User? user = await _context.UserRepository.GetUserByEmail(signInDto.Email);
             if (user is null) return Unauthorized("No user with such email");
 
@@ -33,16 +31,12 @@ namespace TaskManager.WebApi.Controllers
                 return Unauthorized("Wrong password");
             }
 
-            _context.Disconnect();
-
             return user;
         }
 
         [HttpPost]
         public async Task<ActionResult<User>> SignUp([FromBody] SignUpUserDto signUpDto)
         {
-            _context.Connect();
-
             if (await UsernameExists(signUpDto.Username) || await EmailExists(signUpDto.Email))
             {
                 return BadRequest("User already exists");
@@ -59,8 +53,6 @@ namespace TaskManager.WebApi.Controllers
             };
 
             User createdUser = await _context.UserRepository.CreateUser(user);
-
-            _context.Disconnect();
 
             return Ok(createdUser);
         }

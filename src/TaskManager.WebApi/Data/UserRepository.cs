@@ -1,25 +1,27 @@
 ﻿using Dapper;
 using Microsoft.Data.Sqlite;
 using TaskManager.WebApi.Models;
+using TaskManager.WebApi.Queries;
 
 namespace TaskManager.WebApi.Data
 {
     public class UserRepository
     {
-        private SqliteConnection _connection;
+        private string _connectionString;
 
-        public UserRepository(SqliteConnection connection)
+        public UserRepository(string connectionString)
         {
-            _connection = connection;
+            _connectionString = connectionString;
         }
 
         public async Task<User> CreateUser(User user)
         {
-            string sql = @"
-                insert into Users (username, email, passwordHash, passwordSalt)
-                values (@Username, @Email, @PasswordHash, @PasswordSalt);";
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
 
-            int rowsAffected = await _connection.ExecuteAsync(sql, user);
+            string sql = UserQueries.CreateUser;
+
+            int rowsAffected = await connection.ExecuteAsync(sql, user);
 
             User? createdUser = await GetUserByName(user.Username);
 
@@ -30,35 +32,36 @@ namespace TaskManager.WebApi.Data
 
         public async Task<User?> GetUserByName(string username)
         {
-            string sql = @"
-                select id, username, email, passwordHash, passwordSalt
-                from Users
-                where username = @username;";
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
 
-            var users = await _connection.QueryAsync<User>(sql, new { username });
+            string sql = UserQueries.GetUserByUsername;
+
+            var users = await connection.QueryAsync<User>(sql, new { username });
 
             return users.FirstOrDefault();
         }
 
         public async Task<User?> GetUserByEmail(string email)
         {
-            string sql = @"
-                select id, username, email, passwordHash, passwordSalt
-                from Users
-                where email = @email;";
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
 
-            var users = await _connection.QueryAsync<User>(sql, new { email });
+            string sql = UserQueries.GetUserByEmail;
+
+            var users = await connection.QueryAsync<User>(sql, new { email });
 
             return users.FirstOrDefault();
         }
 
         public async Task<IEnumerable<User>> GetUsers()
-        {            
-            string sql = @"
-                select id, username, email, passwordHash, passwordSalt
-                from Users;";
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
 
-            var users = await _connection.QueryAsync<User>(sql);
+            string sql = UserQueries.AllUsers;
+
+            var users = await connection.QueryAsync<User>(sql);
 
             return users;
         }

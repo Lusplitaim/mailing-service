@@ -7,7 +7,7 @@ namespace TaskManager.WebApi.Data
     public class DatabaseContext
     {
         private IConfiguration _config;
-        private SqliteConnection _connection;
+        private string _connectionString;
 
         public UserRepository UserRepository { get; private set; }
 
@@ -17,36 +17,17 @@ namespace TaskManager.WebApi.Data
             InitRepositories();
         }
 
-        public void Connect()
-        {
-            if (ConnectionIsClosed())
-            {
-                _connection.Open();
-            }
-        }
-
-        private bool ConnectionIsClosed()
-        {
-            return _connection.State == ConnectionState.Closed;
-        }
-
-        public void Disconnect()
-        {
-            _connection.Close();
-        }
-
         private void InitRepositories()
         {
-            _connection = CreateConnection();
+            _connectionString = CreateConnectionString();
 
-            UserRepository = new UserRepository(_connection);
+            UserRepository = new UserRepository(_connectionString);
         }
 
-        private SqliteConnection CreateConnection()
+        private string CreateConnectionString()
         {
             var databasePath = GetDatabasePath();
-            string connectionString = string.Format("Data Source={0};", databasePath);
-            return new SqliteConnection(connectionString);
+            return string.Format("Data Source={0};", databasePath);
         }
 
         private string GetDatabasePath()
