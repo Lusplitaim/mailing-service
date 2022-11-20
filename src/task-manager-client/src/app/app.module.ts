@@ -9,13 +9,20 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavComponent } from './nav/nav.component';
 import { TaskCreationComponent } from './tasks/task-creation/task-creation.component';
 import { SignUpComponent } from './registration/sign-up/sign-up.component';
+import { SignInComponent } from './registration/sign-in/sign-in.component';
+import { ToastComponent } from './toast/toast.component';
+import { HomeComponent } from './home/home.component';
+import { httpInterceptorProviders } from './interceptors';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     TaskCreationComponent,
-    SignUpComponent
+    SignUpComponent,
+    SignInComponent,
+    ToastComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +32,9 @@ import { SignUpComponent } from './registration/sign-up/sign-up.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

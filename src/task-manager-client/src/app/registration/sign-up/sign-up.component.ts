@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegistrationService } from 'src/app/services/registration.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,21 +13,29 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-    private regService: RegistrationService) { 
+    private regService: RegistrationService,
+    private toastService: ToastService) {
+
     this.signUpForm = this.formBuilder.group({
-      name: [null, [Validators.required] ],
+      username: [null, [Validators.required] ],
       email: [null, [Validators.required, Validators.email] ],
       password: [null, [Validators.required] ]
     });
+
   }
 
   ngOnInit(): void {
   }
 
   createUser() {
-    this.regService.createUser(this.signUpForm.value).subscribe((user) => {
-      console.log(user);
-    });
+    this.regService.createUser(this.signUpForm.value).subscribe(
+      (user) => {
+        
+      },
+      (errorMsg) => {
+        this.toastService.showError("Error occurred");
+      }
+    );
   }
 
 }
