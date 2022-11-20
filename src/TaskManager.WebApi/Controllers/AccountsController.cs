@@ -36,6 +36,7 @@ namespace TaskManager.WebApi.Controllers
 
             return Ok(new UserDto
             {
+                Id = user.Id,
                 Username = user.Username,
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user)
@@ -64,6 +65,7 @@ namespace TaskManager.WebApi.Controllers
 
             return Ok(new UserDto
             {
+                Id = createdUser.Id,
                 Username = createdUser.Username,
                 Email = createdUser.Email,
                 Token = _tokenService.CreateToken(createdUser)

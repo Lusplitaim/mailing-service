@@ -10,6 +10,7 @@ namespace TaskManager.WebApi.Data
         private string _connectionString;
 
         public UserRepository UserRepository { get; private set; }
+        public ApiRepository ApiRepository { get; private set; }
 
         public DatabaseContext(IConfiguration config)
         {
@@ -22,6 +23,7 @@ namespace TaskManager.WebApi.Data
             _connectionString = CreateConnectionString();
 
             UserRepository = new UserRepository(_connectionString);
+            ApiRepository = new ApiRepository(_connectionString);
         }
 
         private string CreateConnectionString()
