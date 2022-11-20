@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { take } from 'rxjs';
+import { CronTask } from 'src/app/models/cron-task';
+import { TaskApi } from 'src/app/models/task-api';
+import { User } from 'src/app/models/user';
+import { RegistrationService } from 'src/app/services/registration.service';
+import { TaskApiService } from 'src/app/services/task-api.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-task-creation',
@@ -7,17 +14,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./task-creation.component.css']
 })
 export class TaskCreationComponent implements OnInit {
+  currentUser: User | null = null;
 
-  services = ['FreeDictionary', 'DogFacts', 'WizardWorld'];
+  services: string[] = ['WizardWorldApi', 'DogFacts', 'FreeDictionaryApi'];
+
+  taskApis: TaskApi[] = [];
 
   activeApiTab: string = this.services[0];
 
   taskForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { 
+  constructor(private formBuilder: FormBuilder,
+    private taskApiService: TaskApiService,
+    private toast: ToastService,
+    private regService: RegistrationService) {
+
+    this.regService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.currentUser = user;
+    });
+
     this.taskForm = this.formBuilder.group({
-      email: [null, [ Validators.required, Validators.email ] ],
-      api:  [this.activeApiTab, [ Validators.required ] ],
+      name: [null, [ Validators.required ] ],
+      description: [null, [ Validators.required ] ],
       minutes: [[], [ Validators.required ] ],
       hours: [[], [ Validators.required ] ],
       days: [[], [ Validators.required ] ],
@@ -27,20 +45,41 @@ export class TaskCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getTaskApis();
+  }
+
+  getTaskApis() {
+    this.taskApiService.getApis().subscribe(apis => {
+      this.taskApis = apis;
+    });
   }
 
   createTask() {
-    let taskDetails: any = {};
-    taskDetails.email = this.taskForm.value['email'];
-    taskDetails.api = this.taskForm.value['api'];
+    let apiName: string = this.activeApiTab;
+    const taskApi = this.getTaskApiByName(apiName);
+    if (!taskApi) {
+      this.toast.showError("No api with such name");
+      return;
+    }
 
-    taskDetails.minutes = this.taskForm.value['minutes'].toString();
-    taskDetails.hours = this.taskForm.value['hours'].toString();
-    taskDetails.days = this.taskForm.value['days'].toString();
-    taskDetails.months = this.taskForm.value['months'].toString();
-    taskDetails.weekdays = this.taskForm.value['weekdays'].toString();
+    let taskDetails: CronTask = {
+      id: 0,
+      name: this.taskForm.value['name'],
+      description: this.taskForm.value['description'],
+      minutes: this.taskForm.value['minutes'].toString(),
+      hours: this.taskForm.value['hours'].toString(),
+      days: this.taskForm.value['days'].toString(),
+      months: this.taskForm.value['months'].toString(),
+      weekdays: this.taskForm.value['weekdays'].toString(),
+      userId: this.currentUser!.id,
+      apiId: taskApi.id
+    };
 
     console.log(taskDetails);
+  }
+
+  getTaskApiByName(apiName: string): TaskApi | undefined {
+    return this.taskApis.find((taskApi) => taskApi.name === apiName);
   }
 
 }
