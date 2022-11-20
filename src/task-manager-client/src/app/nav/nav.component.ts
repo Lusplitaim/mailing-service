@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RegistrationService } from '../services/registration.service';
 
 @Component({
   selector: 'app-nav',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+  constructor(public regService: RegistrationService) { }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
+  signOut() {
+    this.regService.signOut();
+  }
 }

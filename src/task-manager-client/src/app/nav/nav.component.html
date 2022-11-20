@@ -5,14 +5,15 @@
             Task Creator
         </a>
 
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a routerLink="/home" class="nav-link px-2 link-dark">Home</a></li>
+        <ul *ngIf="regService.currentUser$ | async" class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a routerLink="/" class="nav-link px-2 link-dark">Home</a></li>
             <li><a routerLink="/task/create" class="nav-link px-2 link-dark">Create task</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2">Login</button>
-            <button routerLink="/signup" type="button" class="btn btn-primary">Sign-up</button>
+            <button routerLink="/signin" type="button" class="btn btn-outline-primary me-2" *ngIf="(regService.currentUser$ | async) === null">Login</button>
+            <button routerLink="/signup" type="button" class="btn btn-primary" *ngIf="(regService.currentUser$ | async) === null">Sign-up</button>
+            <button (click)="signOut()" type="button" class="btn btn-primary" *ngIf="regService.currentUser$ | async">Sign out</button>
         </div>
     </header>
 </div>
