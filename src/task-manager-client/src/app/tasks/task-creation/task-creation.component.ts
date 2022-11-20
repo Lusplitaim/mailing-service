@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { CronTask } from 'src/app/models/cron-task';
 import { TaskApi } from 'src/app/models/task-api';
 import { User } from 'src/app/models/user';
+import { CronTaskService } from 'src/app/services/cron-task.service';
 import { RegistrationService } from 'src/app/services/registration.service';
 import { TaskApiService } from 'src/app/services/task-api.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -27,7 +29,9 @@ export class TaskCreationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private taskApiService: TaskApiService,
     private toast: ToastService,
-    private regService: RegistrationService) {
+    private regService: RegistrationService,
+    private cronTaskService: CronTaskService,
+    private router: Router) {
 
     this.regService.currentUser$.pipe(take(1)).subscribe(user => {
       this.currentUser = user;
@@ -62,7 +66,7 @@ export class TaskCreationComponent implements OnInit {
       return;
     }
 
-    let taskDetails: CronTask = {
+    let cronTask: CronTask = {
       id: 0,
       name: this.taskForm.value['name'],
       description: this.taskForm.value['description'],
@@ -75,7 +79,12 @@ export class TaskCreationComponent implements OnInit {
       apiId: taskApi.id
     };
 
-    console.log(taskDetails);
+    this.cronTaskService.createTask(cronTask).subscribe((isCreated: boolean) => {
+      this.toast.showSuccess("New task has been created");
+      this.router.navigateByUrl("/");
+    }, error => {
+      this.toast.showError(error);
+    });
   }
 
   getTaskApiByName(apiName: string): TaskApi | undefined {

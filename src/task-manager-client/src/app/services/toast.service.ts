@@ -21,6 +21,10 @@ export class ToastService {
     this.toasts.push({ header: "Error", body: error, delay: 4000, classname: 'bg-danger text-light' });
 	}
 
+  showSuccess(message: string) {
+    this.toasts.push({ header: "Success", body: message, delay: 4000, classname: 'bg-success text-light' });
+	}
+
   remove(toast: ToastInfo) {
     this.toasts = this.toasts.filter(t => t != toast);
   }
