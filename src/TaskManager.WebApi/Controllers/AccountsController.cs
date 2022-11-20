@@ -4,20 +4,23 @@ using System.Text;
 using TaskManager.WebApi.Data;
 using TaskManager.WebApi.Models;
 using TaskManager.WebApi.DTO;
+using TaskManager.WebApi.Interfaces;
 
 namespace TaskManager.WebApi.Controllers
 {
     public class AccountsController : BaseApiController
     {
         private DatabaseContext _context;
+        private ITokenService _tokenService;
 
-        public AccountsController(DatabaseContext context)
+        public AccountsController(DatabaseContext context, ITokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> SignIn([FromBody] SignInUserDto signInDto)
+        public async Task<ActionResult<UserDto>> SignIn([FromBody] SignInUserDto signInDto)
         {
             User? user = await _context.UserRepository.GetUserByEmail(signInDto.Email);
             if (user is null) return Unauthorized("No user with such email");
@@ -31,11 +34,16 @@ namespace TaskManager.WebApi.Controllers
                 return Unauthorized("Wrong password");
             }
 
-            return user;
+            return Ok(new UserDto
+            {
+                Username = user.Username,
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user)
+            });
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> SignUp([FromBody] SignUpUserDto signUpDto)
+        public async Task<ActionResult<UserDto>> SignUp([FromBody] SignUpUserDto signUpDto)
         {
             if (await UsernameExists(signUpDto.Username) || await EmailExists(signUpDto.Email))
             {
@@ -54,7 +62,12 @@ namespace TaskManager.WebApi.Controllers
 
             User createdUser = await _context.UserRepository.CreateUser(user);
 
-            return Ok(createdUser);
+            return Ok(new UserDto
+            {
+                Username = createdUser.Username,
+                Email = createdUser.Email,
+                Token = _tokenService.CreateToken(createdUser)
+            });
         }
 
         private async Task<bool> UsernameExists(string username)
