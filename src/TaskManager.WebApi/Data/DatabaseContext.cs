@@ -11,6 +11,7 @@ namespace TaskManager.WebApi.Data
 
         public UserRepository UserRepository { get; private set; }
         public ApiRepository ApiRepository { get; private set; }
+        public CronTaskRepository CronTaskRepository { get; private set; }
 
         public DatabaseContext(IConfiguration config)
         {
@@ -24,6 +25,7 @@ namespace TaskManager.WebApi.Data
 
             UserRepository = new UserRepository(_connectionString);
             ApiRepository = new ApiRepository(_connectionString);
+            CronTaskRepository = new CronTaskRepository(_connectionString);
         }
 
         private string CreateConnectionString()

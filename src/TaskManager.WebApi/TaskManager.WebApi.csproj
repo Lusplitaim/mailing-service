@@ -7,15 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Middlewares\**" />
+    <Content Remove="Middlewares\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
+    <None Remove="Middlewares\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.11" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Middlewares\" />
   </ItemGroup>
 
 </Project>
