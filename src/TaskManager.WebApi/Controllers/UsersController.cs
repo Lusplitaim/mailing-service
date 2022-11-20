@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.WebApi.Data;
-using TaskManager.WebApi.DTO;
-using TaskManager.WebApi.Models;
+using TaskManager.Core.Models;
+using TaskManager.Application.DTO;
 
 namespace TaskManager.WebApi.Controllers
 {

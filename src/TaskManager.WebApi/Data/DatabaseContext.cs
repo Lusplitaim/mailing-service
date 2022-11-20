@@ -1,6 +1,4 @@
-﻿using System.Data.Common;
-using System.Data;
-using Microsoft.Data.Sqlite;
+﻿using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.WebApi.Data
 {

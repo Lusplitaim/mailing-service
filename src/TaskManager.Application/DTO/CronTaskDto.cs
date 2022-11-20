@@ -1,8 +1,7 @@
-﻿namespace TaskManager.WebApi.Models
+﻿namespace TaskManager.Application.DTO
 {
-    public class CronTask
+    public class CronTaskDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Minutes { get; set; }

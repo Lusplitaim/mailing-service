@@ -2,9 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using TaskManager.WebApi.Data;
-using TaskManager.WebApi.Models;
-using TaskManager.WebApi.DTO;
+using TaskManager.Core.Models;
 using TaskManager.WebApi.Interfaces;
+using TaskManager.Application.DTO;
 
 namespace TaskManager.WebApi.Controllers
 {

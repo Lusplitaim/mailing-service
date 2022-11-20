@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using Microsoft.Data.Sqlite;
-using TaskManager.WebApi.Models;
-using TaskManager.WebApi.Queries;
+using TaskManager.Core.Models;
+using TaskManager.Infrastructure.Queries;
 
-namespace TaskManager.WebApi.Data
+namespace TaskManager.Infrastructure.Data
 {
     public class ApiRepository
     {

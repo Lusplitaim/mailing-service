@@ -1,4 +1,4 @@
-﻿using TaskManager.WebApi.Models;
+﻿using TaskManager.Core.Models;
 
 namespace TaskManager.WebApi.Interfaces
 {

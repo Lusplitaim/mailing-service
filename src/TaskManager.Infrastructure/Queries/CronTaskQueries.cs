@@ -1,4 +1,4 @@
-﻿namespace TaskManager.WebApi.Queries
+﻿namespace TaskManager.Infrastructure.Queries
 {
     public static class CronTaskQueries
     {

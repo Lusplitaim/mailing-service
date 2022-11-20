@@ -21,4 +21,10 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManager.Application\TaskManager.Application.csproj" />
+    <ProjectReference Include="..\TaskManager.Core\TaskManager.Core.csproj" />
+    <ProjectReference Include="..\TaskManager.Infrastructure\TaskManager.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

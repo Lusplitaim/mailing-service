@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskManager.WebApi.Data;
-using TaskManager.WebApi.Models;
+using TaskManager.Core.Models;
 
 namespace TaskManager.WebApi.Controllers
 {

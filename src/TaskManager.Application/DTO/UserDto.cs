@@ -1,4 +1,4 @@
-﻿namespace TaskManager.WebApi.DTO
+﻿namespace TaskManager.Application.DTO
 {
     public class UserDto
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskManager.WebApi.DTO
+namespace TaskManager.Application.DTO
 {
     public class SignInUserDto
     {

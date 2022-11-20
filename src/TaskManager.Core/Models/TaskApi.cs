@@ -1,4 +1,4 @@
-﻿namespace TaskManager.WebApi.Models
+﻿namespace TaskManager.Core.Models
 {
     public class TaskApi
     {
