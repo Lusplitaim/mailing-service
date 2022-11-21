@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TaskManager.WebApi.Data;
+using TaskManager.Infrastructure.Data;
 using TaskManager.WebApi.Interfaces;
 using TaskManager.WebApi.Services;
 
@@ -32,7 +32,12 @@ internal class Program
             });
         builder.Services.AddAuthorization();
         builder.Services.AddCors();
-        builder.Services.AddScoped<DatabaseContext>();
+        builder.Services.AddScoped(f =>
+        {
+            IConfiguration config = f.GetRequiredService<IConfiguration>();
+            string connectionString = string.Format("Data Source={0};", config["DatabasePath"]);
+            return new DatabaseContext(connectionString);
+        });
         builder.Services.AddScoped<ITokenService, TokenService>();
 
         var app = builder.Build();

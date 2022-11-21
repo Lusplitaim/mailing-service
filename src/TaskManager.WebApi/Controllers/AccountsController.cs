@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
-using TaskManager.WebApi.Data;
 using TaskManager.Core.Models;
 using TaskManager.WebApi.Interfaces;
 using TaskManager.Application.DTO;
+using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.WebApi.Controllers
 {

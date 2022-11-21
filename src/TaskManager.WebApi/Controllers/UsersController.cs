@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskManager.WebApi.Data;
 using TaskManager.Core.Models;
 using TaskManager.Application.DTO;
+using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.WebApi.Controllers
 {
@@ -16,7 +16,6 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             var userRepository = _context.UserRepository;
