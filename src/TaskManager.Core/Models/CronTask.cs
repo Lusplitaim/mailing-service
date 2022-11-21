@@ -14,6 +14,8 @@ namespace TaskManager.Core.Models
         public string Weekdays { get; set; }
         public int UserId { get; set; }
         public int ApiId { get; set; }
+        public TaskApi Api { get; set; }
+        public AppUser User { get; set; }
 
 
         public static implicit operator CronDate(CronTask task)

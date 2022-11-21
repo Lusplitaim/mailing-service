@@ -14,7 +14,7 @@ namespace TaskManager.Infrastructure.Data
             _connectionString = connectionString;
         }
 
-        public async Task<User> CreateUser(User user)
+        public async Task<AppUser> CreateUser(AppUser user)
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
@@ -23,45 +23,45 @@ namespace TaskManager.Infrastructure.Data
 
             int rowsAffected = await connection.ExecuteAsync(sql, user);
 
-            User? createdUser = await GetUserByName(user.Username);
+            AppUser? createdUser = await GetUserByName(user.Username);
 
             if (createdUser is null) throw new Exception("Could not create user");
 
             return createdUser;
         }
 
-        public async Task<User?> GetUserByName(string username)
+        public async Task<AppUser?> GetUserByName(string username)
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             string sql = UserQueries.GetUserByUsername;
 
-            var users = await connection.QueryAsync<User>(sql, new { username });
+            var users = await connection.QueryAsync<AppUser>(sql, new { username });
 
             return users.FirstOrDefault();
         }
 
-        public async Task<User?> GetUserByEmail(string email)
+        public async Task<AppUser?> GetUserByEmail(string email)
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             string sql = UserQueries.GetUserByEmail;
 
-            var users = await connection.QueryAsync<User>(sql, new { email });
+            var users = await connection.QueryAsync<AppUser>(sql, new { email });
 
             return users.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<AppUser>> GetUsers()
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             string sql = UserQueries.AllUsers;
 
-            var users = await connection.QueryAsync<User>(sql);
+            var users = await connection.QueryAsync<AppUser>(sql);
 
             return users;
         }

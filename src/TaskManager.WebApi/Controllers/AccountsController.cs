@@ -22,7 +22,7 @@ namespace TaskManager.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDto>> SignIn([FromBody] SignInUserDto signInDto)
         {
-            User? user = await _context.UserRepository.GetUserByEmail(signInDto.Email);
+            AppUser? user = await _context.UserRepository.GetUserByEmail(signInDto.Email);
             if (user is null) return Unauthorized("No user with such email");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -53,7 +53,7 @@ namespace TaskManager.WebApi.Controllers
 
             using var hmac = new HMACSHA512();
 
-            User user = new()
+            AppUser user = new()
             {
                 Username = signUpDto.Username.ToLower(),
                 Email = signUpDto.Email,
@@ -61,7 +61,7 @@ namespace TaskManager.WebApi.Controllers
                 PasswordSalt = hmac.Key,
             };
 
-            User createdUser = await _context.UserRepository.CreateUser(user);
+            AppUser createdUser = await _context.UserRepository.CreateUser(user);
 
             return Ok(new UserDto
             {

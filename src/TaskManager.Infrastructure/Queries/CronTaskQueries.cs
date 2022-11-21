@@ -8,5 +8,10 @@
 
         public static string GetTasks => @"
             select * from Tasks;";
+
+        public static string GetFullTasks => @"
+            select * from Tasks t
+            join Users u on u.id = t.userId
+            join Api a on a.id = t.apiId;";
     }
 }

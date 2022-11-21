@@ -6,13 +6,20 @@ using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TasksController : BaseApiController
     {
         DatabaseContext _context;
         public TasksController(DatabaseContext context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetFullTasks()
+        {
+            var tasks = await _context.CronTaskRepository.GetFullTasks();
+            return Ok(tasks);
         }
 
         [HttpPost]

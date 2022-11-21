@@ -15,7 +15,7 @@ namespace TaskManager.WebApi.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
-        public string CreateToken(User user)
+        public string CreateToken(AppUser user)
         {
             var claims = new List<Claim>
             {
