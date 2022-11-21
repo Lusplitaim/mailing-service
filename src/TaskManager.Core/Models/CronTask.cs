@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Core.Models
+﻿using System.Runtime.CompilerServices;
+
+namespace TaskManager.Core.Models
 {
     public class CronTask
     {
@@ -12,5 +14,18 @@
         public string Weekdays { get; set; }
         public int UserId { get; set; }
         public int ApiId { get; set; }
+
+
+        public static implicit operator CronDate(CronTask task)
+        {
+            return new CronDate()
+            {
+                Minutes = task.Minutes,
+                Hours = task.Hours,
+                Days = task.Days,
+                Months = task.Months,
+                Weekdays = task.Weekdays
+            };
+        }
     }
 }

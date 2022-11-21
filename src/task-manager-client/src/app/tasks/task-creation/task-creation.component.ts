@@ -18,7 +18,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class TaskCreationComponent implements OnInit {
   currentUser: User | null = null;
 
-  services: string[] = ['WizardWorldApi', 'DogFacts', 'FreeDictionaryApi'];
+  services: string[] = ['WizardWorld', 'DogFacts', 'FreeDictionary'];
 
   taskApis: TaskApi[] = [];
 
