@@ -13,6 +13,7 @@ import { SignInComponent } from './registration/sign-in/sign-in.component';
 import { ToastComponent } from './toast/toast.component';
 import { HomeComponent } from './home/home.component';
 import { httpInterceptorProviders } from './interceptors';
+import { TaskTableComponent } from './tasks/task-table/task-table.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { httpInterceptorProviders } from './interceptors';
     SignUpComponent,
     SignInComponent,
     ToastComponent,
-    HomeComponent
+    HomeComponent,
+    TaskTableComponent
   ],
   imports: [
     BrowserModule,

@@ -35,6 +35,13 @@ namespace TaskManager.WebApi.Controllers
             return Ok(tasks);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteTask(int id)
+        {
+            bool isDeleted = await _context.CronTaskRepository.DeleteTask(id);
+            return Ok(isDeleted);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateTask([FromBody] CronTaskDto taskDto)
         {

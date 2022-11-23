@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.Sqlite;
+using System.Threading.Tasks;
 using TaskManager.Core.Models;
 using TaskManager.Infrastructure.Queries;
 
@@ -33,7 +34,8 @@ namespace TaskManager.Infrastructure.Data
 
             string sql = CronTaskQueries.GetTasksByUsername;
 
-            IEnumerable<CronTask> tasks = await connection.QueryAsync<CronTask>(sql, new { Username = username });
+            IEnumerable<CronTask> tasks = await connection
+                .QueryAsync<CronTask>(sql, new { Username = username });
 
             return tasks;
         }
@@ -66,6 +68,18 @@ namespace TaskManager.Infrastructure.Data
                 });
 
             return tasks;
+        }
+
+        public async Task<bool> DeleteTask(int id)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
+
+            string sql = CronTaskQueries.DeleteTask;
+
+            int rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+
+            return rowsAffected == 1 ? true : false;
         }
     }
 }

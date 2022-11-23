@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { take } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { CronTask } from '../models/cron-task';
+import { User } from '../models/user';
+import { RegistrationService } from './registration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +12,18 @@ import { CronTask } from '../models/cron-task';
 export class CronTaskService {
   baseApi = environment.baseApi;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private regService: RegistrationService) { }
 
   createTask(cronTask: CronTask) {
     return this.http.post<boolean>(`${this.baseApi}/Tasks/CreateTask`, cronTask);
+  }
+
+  getUserTasks() {
+    return this.http.get<CronTask[]>(`${this.baseApi}/Tasks/GetTasksByUsername`);
+  }
+
+  deleteTask(id: number) {
+    return this.http.delete<boolean>(`${this.baseApi}/Tasks/DeleteTask/${id}`);
   }
 }

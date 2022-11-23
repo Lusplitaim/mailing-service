@@ -10,13 +10,18 @@
             select * from Tasks;";
 
         public static string GetTasksByUsername => @"
-            select * from Tasks t
-            join Users u on t.userId = u.id
-            where u.username = @Username;";
+            select t.id, t.name, t.description, t.minutes, t.hours, t.days, t.months, t.weekdays, t.userId, t.apiId
+            from Tasks t
+            join Users u on u.id = t.userId
+            where @Username = u.username;";
 
         public static string GetFullTasks => @"
             select * from Tasks t
             join Users u on u.id = t.userId
             join Api a on a.id = t.apiId;";
+
+        public static string DeleteTask => @"
+            delete from Tasks
+            where id = @Id";
     }
 }

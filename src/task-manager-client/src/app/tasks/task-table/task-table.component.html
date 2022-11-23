@@ -1,0 +1,34 @@
+<div class="row">
+    <h3 class="col-4">User tasks</h3>
+    <button routerLink="/task/create" class="btn btn-outline-primary col-4">New task</button>
+</div>
+<br />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let task of tasks">
+            <td>{{task.id}}</td>
+            <td>{{task.name}}</td>
+            <td>{{task.description}}</td>
+            <td><button type="button" class="btn btn-danger btn-sm" (click)="openConfirmationModal(task.id, content)">X</button></td>
+        </tr>
+    </tbody>
+</table>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Are you sure?</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cancel')"></button>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" (click)="modal.close('Delete')">Delete</button>
+    </div>
+</ng-template>
