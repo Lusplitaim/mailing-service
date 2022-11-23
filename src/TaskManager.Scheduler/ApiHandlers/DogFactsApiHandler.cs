@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Models;
 using TaskManager.Scheduler.ApiRetrievers;
+using TaskManager.Scheduler.EmailSenders;
+using TaskManager.Scheduler.Writers;
 
 namespace TaskManager.Scheduler.ApiHandlers
 {
@@ -13,12 +15,15 @@ namespace TaskManager.Scheduler.ApiHandlers
         public DogFactsApiHandler(CronTask task)
         {
             _dataRetriever = new DogFactsApiRetriever(task);
+            _writer = new DogFactsCsvWriter();
+            _emailSender = new DogFactsEmailSender(task);
         }
 
-        public override async Task InvokeAsync()
+        /*public override async Task InvokeAsync()
         {
             var data = await _dataRetriever.RetrieveData();
-            return;
-        }
+            string filename = _writer.Write(data);
+            await _emailSender.SendAsync(filename);
+        }*/
     }
 }

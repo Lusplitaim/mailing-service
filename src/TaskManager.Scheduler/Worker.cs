@@ -1,4 +1,7 @@
+using FluentEmail.Core;
+using FluentEmail.Smtp;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TaskManager.Core.Models;
@@ -23,6 +26,7 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        SetupEmailDefaultSender();
         _apiHandlerTypes = CreateApiHandlerTypesDictionary();
 
         string connectionString = string.Format("Data Source={0};", _config["DatabasePath"]);
@@ -40,26 +44,21 @@ public class Worker : BackgroundService
         }
     }
 
-    private async Task ManageCronTaskExecution()
+    private void SetupEmailDefaultSender()
     {
-        var tasks = await _context.CronTaskRepository.GetFullTasks();
-
-        foreach (var task in tasks)
+        var sender = new SmtpSender(() => new SmtpClient("localhost")
         {
-            if (ShouldExecuteTaskNow(task))
-            {
-                var scheduledTask = new Task(async () =>
-                {
-                    await ExecuteCronTask(task);
-                });
-                scheduledTask.Start();
-            }
-        }
+            EnableSsl = false,
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            Port = 25
+        });
+
+        Email.DefaultSender = sender;
     }
 
     private Dictionary<string, Type> CreateApiHandlerTypesDictionary()
     {
-        Type[] apiHandlerRelativeTypes = GetApiHandlerAttrTypes();
+        Type[] apiHandlerRelativeTypes = GetApiHandlerAttrChildTypes();
         Dictionary<string, Type> dict = new();
         foreach (var type in apiHandlerRelativeTypes)
         {
@@ -75,7 +74,7 @@ public class Worker : BackgroundService
         return dict;
     }
 
-    private Type[] GetApiHandlerAttrTypes()
+    private Type[] GetApiHandlerAttrChildTypes()
     {
         var assembly = typeof(Worker).Module.Assembly;
         return assembly.GetTypes()
@@ -98,6 +97,30 @@ public class Worker : BackgroundService
         return regex.Match(typeof(ApiHandler<>).Name).Value;
     }
 
+    private async Task ManageCronTaskExecution()
+    {
+        var tasks = await _context.CronTaskRepository.GetFullTasks();
+
+        foreach (var task in tasks)
+        {
+            if (ShouldExecuteTaskNow(task))
+            {
+                var scheduledTask = new Task(async () =>
+                {
+                    await ExecuteCronTask(task);
+                });
+                scheduledTask.Start();
+            }
+        }
+    }
+
+    private bool ShouldExecuteTaskNow(CronTask task)
+    {
+        CronDate taskCronDate = (CronDate)task;
+
+        return taskCronDate.Matches(DateTime.Now);
+    }
+
     private async Task ExecuteCronTask(CronTask task)
     {
         Type? apiHandlerType; 
@@ -107,22 +130,5 @@ public class Worker : BackgroundService
 
         var apiHandler = Activator.CreateInstance(apiHandlerType, task) as IApiHandlerInvoker;
         await apiHandler!.InvokeAsync();
-
-        /*switch (task.Api.Name)
-        {
-            case "DogFacts":
-                ApiHandler<IEnumerable<DogFact>> dogHandler = new DogFactsApiHandler();
-                break;
-            case "EnglishWordnet":
-
-                break;
-        }*/
-    }
-
-    private bool ShouldExecuteTaskNow(CronTask task)
-    {
-        CronDate taskCronDate = (CronDate)task;
-
-        return taskCronDate.Matches(DateTime.Now);
     }
 }

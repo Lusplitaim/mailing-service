@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Scheduler.ApiRetrievers;
+using TaskManager.Scheduler.EmailSenders;
+using TaskManager.Scheduler.Writers;
 
 namespace TaskManager.Scheduler.ApiHandlers
 {
@@ -11,11 +13,14 @@ namespace TaskManager.Scheduler.ApiHandlers
     public abstract class ApiHandler<TModel> : IApiHandlerInvoker
     {
         protected ApiRetriever<TModel> _dataRetriever;
-        public TModel Data { get; private set; }
+        protected ICsvWriter<TModel> _writer;
+        protected IEmailSender _emailSender;
 
         public virtual async Task InvokeAsync()
         {
-            await _dataRetriever.RetrieveData();
+            TModel data = await _dataRetriever.RetrieveData();
+            string filename = _writer.Write(data);
+            await _emailSender.SendWithAttachmentAsync(filename);
         }
     }
 }
