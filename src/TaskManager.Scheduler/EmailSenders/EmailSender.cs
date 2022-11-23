@@ -10,10 +10,10 @@ using TaskManager.Core.Models;
 
 namespace TaskManager.Scheduler.EmailSenders
 {
-    internal class DogFactsEmailSender : IEmailSender
+    internal class EmailSender : IEmailSender
     {
         private CronTask _task;
-        public DogFactsEmailSender(CronTask task)
+        public EmailSender(CronTask task)
         {
             _task = task;
         }

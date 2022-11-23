@@ -10,12 +10,12 @@ using TaskManager.Scheduler.Writers;
 
 namespace TaskManager.Scheduler.ApiHandlers
 {
-    public class DogFactsApiHandler : ApiHandler<IEnumerable<DogFact>>
+    public class JokesApiHandler : ApiHandler<Joke>
     {
-        public DogFactsApiHandler(CronTask task)
+        public JokesApiHandler(CronTask task)
         {
-            _dataRetriever = new DogFactsApiRetriever(task);
-            _writer = new DogFactsCsvWriter();
+            _dataRetriever = new JokesApiRetriever(task);
+            _writer = new JokesCsvWriter();
             _emailSender = new EmailSender(task);
         }
     }
