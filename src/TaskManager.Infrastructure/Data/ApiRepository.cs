@@ -19,7 +19,7 @@ namespace TaskManager.Infrastructure.Data
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            string sql = TaskApiQueries.GetAllApis;
+            string sql = TaskApiQueries.GetApis;
 
             var apis = await connection.QueryAsync<TaskApi>(sql);
 

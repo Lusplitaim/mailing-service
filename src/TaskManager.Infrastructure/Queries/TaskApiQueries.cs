@@ -2,7 +2,7 @@
 {
     public static class TaskApiQueries
     {
-        public static string GetAllApis => @"
+        public static string GetApis => @"
             select *
             from Api";
     }
