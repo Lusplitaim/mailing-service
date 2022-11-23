@@ -18,11 +18,9 @@ import { ToastService } from 'src/app/services/toast.service';
 export class TaskCreationComponent implements OnInit {
   currentUser: User | null = null;
 
-  services: string[] = ['WizardWorld', 'DogFacts', 'FreeDictionary'];
-
   taskApis: TaskApi[] = [];
 
-  activeApiTab: string = this.services[0];
+  activeApi!: TaskApi;
 
   taskForm: FormGroup;
 
@@ -38,6 +36,8 @@ export class TaskCreationComponent implements OnInit {
     });
 
     this.taskForm = this.formBuilder.group({
+      api: [null, [ Validators.required ]],
+      urlPath: [null, [ Validators.required ]],
       name: [null, [ Validators.required ] ],
       description: [null, [ Validators.required ] ],
       minutes: [[], [ Validators.required ] ],
@@ -46,10 +46,27 @@ export class TaskCreationComponent implements OnInit {
       months: [[], [ Validators.required ] ],
       weekdays: [[], [ Validators.required ] ],
     });
+
+    this.onApiValueChanges();
   }
 
   ngOnInit(): void {
     this.getTaskApis();
+  }
+
+  onApiValueChanges() {
+    this.taskForm.get('api')!.valueChanges.subscribe((selectedApi: TaskApi) => {
+      this.activeApi = selectedApi;
+      if (selectedApi) {
+        console.log(selectedApi);
+
+        if (selectedApi.urlPaths === null) {
+          this.taskApiService.getApiPaths(selectedApi.id).subscribe(urlPaths => {
+            selectedApi.urlPaths = urlPaths;
+          });
+        }
+      }
+    });
   }
 
   getTaskApis() {
@@ -58,8 +75,15 @@ export class TaskCreationComponent implements OnInit {
     });
   }
 
+  getPathsForSelectedApi() {
+    let selectedApi = this.taskForm.value['api']?.value;
+    if (selectedApi) {
+      console.log(this.taskForm.value['api'].value);
+    }
+  }
+
   createTask() {
-    let apiName: string = this.activeApiTab;
+    let apiName: string = this.activeApi.name;
     const taskApi = this.getTaskApiByName(apiName);
     if (!taskApi) {
       this.toast.showError("No api with such name");

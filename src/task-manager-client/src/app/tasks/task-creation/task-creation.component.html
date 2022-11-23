@@ -1,26 +1,27 @@
-<ul ngbNav #nav="ngbNav" [(activeId)]="activeApiTab" class="nav-tabs">
-    <li [ngbNavItem]="services[0]">
-        <a ngbNavLink>{{services[0]}}</a>
-        <ng-template ngbNavContent>
-        </ng-template>
-    </li>
-    <li [ngbNavItem]="services[1]">
-        <a ngbNavLink>{{services[1]}}</a>
-        <ng-template ngbNavContent>
-        </ng-template>
-    </li>
-    <li [ngbNavItem]="services[2]">
-        <a ngbNavLink>{{services[2]}}</a>
-        <ng-template ngbNavContent>
-        </ng-template>
-    </li>
-</ul>
-
-<div [ngbNavOutlet]="nav" class="mt-2"></div>
-
-<hr class="my-4">
+<h3>Task Creation</h3>
 
 <form [formGroup]="taskForm">
+    <div class="row g-3">
+        <div class="col-sm-6 form-group">
+            <label for="api" class="form-label">API</label>
+            <select formControlName="api" class="form-control" id="api">
+                <option *ngFor="let api of taskApis" [ngValue]="api">{{api.name}}</option>
+            </select>
+            <div class="text-danger" *ngIf="taskForm.controls['api'].invalid && taskForm.controls['api'].touched">
+                Choose API
+            </div>
+        </div>
+        <div class="col-sm-6 form-group">
+            <label for="urlPath" class="form-label">Path</label>
+            <select formControlName="urlPath" class="form-control" id="urlPath">
+                <option *ngFor="let urlPath of activeApi?.urlPaths" [ngValue]="urlPath">{{urlPath.name}}</option>
+            </select>
+            <div class="text-danger" *ngIf="taskForm.controls['urlPath'].invalid && taskForm.controls['urlPath'].touched">
+                Choose path
+            </div>
+        </div>
+    </div>
+    <br>
     <div class="row g-3">
         <div class="col-sm-6 form-group">
             <label for="name" class="form-label">Name</label>
