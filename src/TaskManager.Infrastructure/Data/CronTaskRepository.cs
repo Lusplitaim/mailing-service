@@ -26,6 +26,18 @@ namespace TaskManager.Infrastructure.Data
             return tasks;
         }
 
+        public async Task<IEnumerable<CronTask>> GetTasksByUsername(string username)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
+
+            string sql = CronTaskQueries.GetTasksByUsername;
+
+            IEnumerable<CronTask> tasks = await connection.QueryAsync<CronTask>(sql, new { Username = username });
+
+            return tasks;
+        }
+
         public async Task<bool> CreateTask(CronTask task)
         {
             using var connection = new SqliteConnection(_connectionString);

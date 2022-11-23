@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManager.Core.Models;
 using TaskManager.Application.DTO;
 using TaskManager.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace TaskManager.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class TasksController : BaseApiController
     {
         DatabaseContext _context;
@@ -19,6 +21,17 @@ namespace TaskManager.WebApi.Controllers
         public async Task<ActionResult> GetFullTasks()
         {
             var tasks = await _context.CronTaskRepository.GetFullTasks();
+            return Ok(tasks);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetTasksByUsername()
+        {
+            var httpContext = ControllerContext.HttpContext;
+            var username = httpContext.User.Identity?.Name;
+            if (username is null) return Unauthorized("You are probably unauthorized");
+
+            var tasks = await _context.CronTaskRepository.GetTasksByUsername(username);
             return Ok(tasks);
         }
 

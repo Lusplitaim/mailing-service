@@ -9,6 +9,11 @@
         public static string GetTasks => @"
             select * from Tasks;";
 
+        public static string GetTasksByUsername => @"
+            select * from Tasks t
+            join Users u on t.userId = u.id
+            where u.username = @Username;";
+
         public static string GetFullTasks => @"
             select * from Tasks t
             join Users u on u.id = t.userId
