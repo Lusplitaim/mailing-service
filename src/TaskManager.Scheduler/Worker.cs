@@ -129,6 +129,10 @@ public class Worker : BackgroundService
         if (apiHandlerType is null) return;
 
         var apiHandler = Activator.CreateInstance(apiHandlerType, task) as IApiHandlerInvoker;
-        await apiHandler!.InvokeAsync();
+        try
+        {
+            await apiHandler!.InvokeAsync();
+        }
+        catch (HttpRequestException ex) { }
     }
 }

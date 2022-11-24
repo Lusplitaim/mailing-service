@@ -25,7 +25,15 @@ namespace TaskManager.Scheduler.ApiHandlers
 
         public virtual async Task InvokeAsync()
         {
-            TModel data = await _dataRetriever.RetrieveData();
+            TModel data;
+            try
+            {
+                data = await _dataRetriever.RetrieveData();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpRequestException("Error occured while retrieving data", ex);
+            }
             string filename = _writer.Write(data);
             await _emailSender.SendWithAttachmentAsync(filename);
         }
