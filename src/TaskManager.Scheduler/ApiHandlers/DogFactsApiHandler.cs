@@ -12,11 +12,10 @@ namespace TaskManager.Scheduler.ApiHandlers
 {
     public class DogFactsApiHandler : ApiHandler<IEnumerable<DogFact>>
     {
-        public DogFactsApiHandler(CronTask task)
+        public DogFactsApiHandler(CronTask task): base(task)
         {
             _dataRetriever = new DogFactsApiRetriever(task);
             _writer = new DogFactsCsvWriter();
-            _emailSender = new EmailSender(task);
         }
     }
 }

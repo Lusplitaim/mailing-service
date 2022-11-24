@@ -8,7 +8,7 @@ using TaskManager.Core.Models;
 
 namespace TaskManager.Scheduler.ApiRetrievers
 {
-    public abstract class ApiRetriever<TModel>
+    public class ApiRetriever<TModel>
     {
         private CronTask _task;
         public ApiRetriever(CronTask task)
@@ -16,7 +16,13 @@ namespace TaskManager.Scheduler.ApiRetrievers
             _task = task;
         }
 
-        public abstract string CreateRequestParams();
+        public virtual string CreateRequestParams()
+        {
+            string? requestParams = _task.UrlParamsString;
+            if (requestParams is null) return string.Empty;
+            if (requestParams.StartsWith('?')) return requestParams;
+            else return $"/{requestParams}";
+        }
 
         public Task<TModel> RetrieveData()
         {
