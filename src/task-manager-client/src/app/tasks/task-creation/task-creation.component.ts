@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { CronTask } from 'src/app/models/cron-task';
 import { TaskApi } from 'src/app/models/task-api';
+import { UrlParam } from 'src/app/models/url-param';
+import { UrlPath } from 'src/app/models/url-path';
 import { User } from 'src/app/models/user';
 import { CronTaskService } from 'src/app/services/cron-task.service';
 import { RegistrationService } from 'src/app/services/registration.service';
 import { TaskApiService } from 'src/app/services/task-api.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { UrlParamsSetupComponent } from '../url-params-setup/url-params-setup.component';
 
 @Component({
   selector: 'app-task-creation',
@@ -16,6 +19,10 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./task-creation.component.css']
 })
 export class TaskCreationComponent implements OnInit {
+  @ViewChild(UrlParamsSetupComponent) urlParamsSetup!: UrlParamsSetupComponent;
+
+  currUrlPath: UrlPath | null = null;
+
   currentUser: User | null = null;
 
   taskApis: TaskApi[] = [];
@@ -39,30 +46,59 @@ export class TaskCreationComponent implements OnInit {
       api: [null, [ Validators.required ]],
       urlPath: [null, [ Validators.required ]],
       name: [null, [ Validators.required ] ],
-      description: [null, [ Validators.required ] ],
+      description: [null],
       minutes: [[], [ Validators.required ] ],
       hours: [[], [ Validators.required ] ],
       days: [[], [ Validators.required ] ],
       months: [[], [ Validators.required ] ],
       weekdays: [[], [ Validators.required ] ],
+      urlParamsString: [''],
     });
 
     this.onApiValueChanges();
+    this.onUrlPathValueChanges();
   }
 
   ngOnInit(): void {
     this.getTaskApis();
   }
 
+  openUrlParamsSetup() {
+    this.urlParamsSetup.open();
+  }
+
+  createAndSetUrlParamsString(queryString: string) {
+    let urlParamsString = `${this.taskForm.value['urlPath'].name}?${queryString}`;
+    this.taskForm.controls['urlParamsString'].setValue(urlParamsString);
+  }
+
   onApiValueChanges() {
     this.taskForm.get('api')!.valueChanges.subscribe((selectedApi: TaskApi) => {
+      this.resetUrlPath();
       this.activeApi = selectedApi;
       if (selectedApi) {
-        console.log(selectedApi);
-
-        if (selectedApi.urlPaths === null) {
+        if (!selectedApi.urlPaths) {
           this.taskApiService.getApiPaths(selectedApi.id).subscribe(urlPaths => {
             selectedApi.urlPaths = urlPaths;
+          });
+        }
+      }
+    });
+  }
+
+  resetUrlPath() {
+    this.taskForm.controls['urlPath'].setValue(null);
+    this.currUrlPath = null;
+  }
+
+  onUrlPathValueChanges() {
+    this.taskForm.get('urlPath')!.valueChanges.subscribe((selectedPath: UrlPath) => {
+      this.currUrlPath = selectedPath;
+      if (selectedPath) {
+        if (!selectedPath?.urlParams) {
+          this.taskApiService.getUrlPathParams(selectedPath.id).subscribe(urlParams => {
+            selectedPath.urlParams = urlParams;
+            this.currUrlPath = selectedPath;
           });
         }
       }
@@ -100,7 +136,8 @@ export class TaskCreationComponent implements OnInit {
       months: this.taskForm.value['months'].toString(),
       weekdays: this.taskForm.value['weekdays'].toString(),
       userId: this.currentUser!.id,
-      apiId: taskApi.id
+      apiId: taskApi.id,
+      urlParamsString: this.taskForm.value['urlParamsString']
     };
 
     this.cronTaskService.createTask(cronTask).subscribe((isCreated: boolean) => {

@@ -1,0 +1,21 @@
+<ng-template #content let-offcanvas>
+    <div class="offcanvas-header">
+        <h4 class="offcanvas-title" id="offcanvas-basic-title">Set params</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Close')"></button>
+    </div>
+    <div class="offcanvas-body" *ngIf="urlParams">
+        <form [formGroup]="paramsForm">
+            <div formArrayName="params">
+                <div class="mb-3" *ngFor="let paramForm of getParamForms()" [formGroup]="paramForm">
+                    <label for='value'>{{paramForm.controls["name"].value}}</label>
+                    <div class="input-group">
+                        <input class="form-control" name="value" type="text" formControlName='value'>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="text-end">
+            <button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('Save')">Save</button>
+        </div>
+    </div>
+</ng-template>

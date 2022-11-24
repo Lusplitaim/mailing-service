@@ -9,4 +9,5 @@ export interface CronTask {
     weekdays: string;
     userId: number;
     apiId: number;
+    urlParamsString: string;
 }

@@ -3,8 +3,8 @@
     public static class CronTaskQueries
     {
         public static string CreateTask => @"
-            insert into Tasks (name, description, minutes, hours, days, months, weekdays, userId, apiId)
-            values (@Name, @Description, @Minutes, @Hours, @Days, @Months, @Weekdays, @UserId, @ApiId)";
+            insert into Tasks (name, description, minutes, hours, days, months, weekdays, urlParamsString, userId, apiId)
+            values (@Name, @Description, @Minutes, @Hours, @Days, @Months, @Weekdays, @UrlParamsString, @UserId, @ApiId)";
 
         public static string GetTasks => @"
             select * from Tasks;";

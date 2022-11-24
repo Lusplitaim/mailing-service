@@ -1,8 +1,10 @@
 <h3>Task Creation</h3>
 
+<app-url-params-setup [urlParams]="currUrlPath?.urlParams" (urlParamsEvent)="createAndSetUrlParamsString($event)"></app-url-params-setup>
+
 <form [formGroup]="taskForm">
     <div class="row g-3">
-        <div class="col-sm-6 form-group">
+        <div class="col-sm-5 form-group">
             <label for="api" class="form-label">API</label>
             <select formControlName="api" class="form-control" id="api">
                 <option *ngFor="let api of taskApis" [ngValue]="api">{{api.name}}</option>
@@ -11,7 +13,7 @@
                 Choose API
             </div>
         </div>
-        <div class="col-sm-6 form-group">
+        <div class="col-sm-5 form-group">
             <label for="urlPath" class="form-label">Path</label>
             <select formControlName="urlPath" class="form-control" id="urlPath">
                 <option *ngFor="let urlPath of activeApi?.urlPaths" [ngValue]="urlPath">{{urlPath.name}}</option>
@@ -19,6 +21,11 @@
             <div class="text-danger" *ngIf="taskForm.controls['urlPath'].invalid && taskForm.controls['urlPath'].touched">
                 Choose path
             </div>
+        </div>
+        <div class="col-sm-2 form-group">
+            <button class="btn btn-outline-primary" type="button" (click)="openUrlParamsSetup()">
+                Set params
+            </button>
         </div>
     </div>
     <br>

@@ -14,6 +14,7 @@ import { ToastComponent } from './toast/toast.component';
 import { HomeComponent } from './home/home.component';
 import { httpInterceptorProviders } from './interceptors';
 import { TaskTableComponent } from './tasks/task-table/task-table.component';
+import { UrlParamsSetupComponent } from './tasks/url-params-setup/url-params-setup.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TaskTableComponent } from './tasks/task-table/task-table.component';
     SignInComponent,
     ToastComponent,
     HomeComponent,
-    TaskTableComponent
+    TaskTableComponent,
+    UrlParamsSetupComponent
   ],
   imports: [
     BrowserModule,

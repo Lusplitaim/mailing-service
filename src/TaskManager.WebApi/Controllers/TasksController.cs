@@ -54,6 +54,7 @@ namespace TaskManager.WebApi.Controllers
                 Days = taskDto.Days,
                 Months = taskDto.Months,
                 Weekdays = taskDto.Weekdays,
+                UrlParamsString = taskDto.UrlParamsString,
                 UserId = taskDto.UserId,
                 ApiId = taskDto.ApiId,
             };
