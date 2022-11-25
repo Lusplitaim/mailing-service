@@ -29,9 +29,7 @@ public class Worker : BackgroundService
     {
         SetupEmailDefaultSender();
         _apiHandlerTypes = CreateApiHandlerTypesDictionary();
-
-        string connectionString = string.Format("Data Source={0};", _config["DatabasePath"]);
-        _context = new DatabaseContext(connectionString);
+        _context = CreateDatabaseContext();
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -73,6 +71,12 @@ public class Worker : BackgroundService
             dict.Add(typeName, type);
         }
         return dict;
+    }
+
+    private DatabaseContext CreateDatabaseContext()
+    {
+        string connectionString = string.Format("Data Source={0};", _config["DatabasePath"]);
+        return new DatabaseContext(connectionString);
     }
 
     private Type[] GetApiHandlerAttrChildTypes()
@@ -131,6 +135,6 @@ public class Worker : BackgroundService
         }
         catch (HttpRequestException ex) { }
 
-        await _context.CronTaskRepository.UpdateExecutionDate(task, DateTime.Now);
+        await _context.CronTaskRepository.UpdateExecutionDateAndCount(task, DateTime.Now);
     }
 }

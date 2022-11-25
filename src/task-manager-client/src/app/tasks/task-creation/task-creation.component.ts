@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { CronTask } from 'src/app/models/cron-task';
 import { TaskApi } from 'src/app/models/task-api';
-import { UrlParam } from 'src/app/models/url-param';
 import { UrlPath } from 'src/app/models/url-path';
 import { User } from 'src/app/models/user';
 import { CronTaskService } from 'src/app/services/cron-task.service';
@@ -137,7 +136,8 @@ export class TaskCreationComponent implements OnInit {
       weekdays: this.taskForm.value['weekdays'].toString(),
       userId: this.currentUser!.id,
       apiId: taskApi.id,
-      urlParamsString: this.taskForm.value['urlParamsString']
+      urlParamsString: this.taskForm.value['urlParamsString'],
+      executionCount: 0
     };
 
     this.cronTaskService.createTask(cronTask).subscribe((isCreated: boolean) => {

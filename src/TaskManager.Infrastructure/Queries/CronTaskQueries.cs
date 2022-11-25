@@ -24,9 +24,9 @@
             delete from Tasks
             where id = @Id";
 
-        public static string UpdateExecutionDate => @"
+        public static string UpdateExecutionDateAndCount => @"
             update Tasks
-            set lastExecuted = @LastExecuted
+            set lastExecuted = @LastExecuted, executionCount = executionCount + 1
             where id = @Id;";
     }
 }

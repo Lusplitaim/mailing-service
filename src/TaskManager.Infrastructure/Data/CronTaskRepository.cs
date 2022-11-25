@@ -82,12 +82,12 @@ namespace TaskManager.Infrastructure.Data
             return rowsAffected == 1 ? true : false;
         }
 
-        public async Task<bool> UpdateExecutionDate(CronTask task, DateTime datetime)
+        public async Task<bool> UpdateExecutionDateAndCount(CronTask task, DateTime datetime)
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            string sql = CronTaskQueries.UpdateExecutionDate;
+            string sql = CronTaskQueries.UpdateExecutionDateAndCount;
 
             int rowsAffected = await connection.ExecuteAsync(sql, new { Id = task.Id, LastExecuted = datetime });
 

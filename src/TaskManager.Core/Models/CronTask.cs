@@ -14,6 +14,7 @@ namespace TaskManager.Core.Models
         public string Weekdays { get; set; }
         public string? UrlParamsString { get; set; }
         public DateTime? LastExecuted { get; set; }
+        public int ExecutionCount { get; set; }
         public int UserId { get; set; }
         public int ApiId { get; set; }
         public TaskApi Api { get; set; }
