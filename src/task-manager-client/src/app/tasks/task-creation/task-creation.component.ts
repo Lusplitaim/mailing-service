@@ -140,7 +140,7 @@ export class TaskCreationComponent implements OnInit {
       executionCount: 0
     };
 
-    this.cronTaskService.createTask(cronTask).subscribe((isCreated: boolean) => {
+    this.cronTaskService.createTask(cronTask).subscribe(() => {
       this.toast.showSuccess("New task has been created");
       this.router.navigateByUrl("/");
     }, error => {

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskManager.Core.Models;
 using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.WebApi.Controllers
 {
+    [Authorize]
     public class ApisController : BaseApiController
     {
         public DatabaseContext _context;

@@ -16,7 +16,7 @@ export class CronTaskService {
     private regService: RegistrationService) { }
 
   createTask(cronTask: CronTask) {
-    return this.http.post<boolean>(`${this.baseApi}/Tasks/CreateTask`, cronTask);
+    return this.http.post(`${this.baseApi}/Tasks/CreateTask`, cronTask);
   }
 
   getUserTasks() {

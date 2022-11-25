@@ -17,8 +17,8 @@ namespace TaskManager.Core.Models
         public int ExecutionCount { get; set; }
         public int UserId { get; set; }
         public int ApiId { get; set; }
-        public TaskApi Api { get; set; }
-        public AppUser User { get; set; }
+        public TaskApi? Api { get; set; }
+        public AppUser? User { get; set; }
 
 
         public static implicit operator CronDate(CronTask task)

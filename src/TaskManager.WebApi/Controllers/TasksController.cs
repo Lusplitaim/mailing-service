@@ -3,23 +3,27 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManager.Core.Models;
 using TaskManager.Application.DTO;
 using TaskManager.Infrastructure.Data;
+using AutoMapper;
 
 namespace TaskManager.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TasksController : BaseApiController
     {
         DatabaseContext _context;
-        public TasksController(DatabaseContext context)
+        IMapper _mapper;
+        public TasksController(DatabaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult> GetFullTasks()
         {
             var tasks = await _context.CronTaskRepository.GetFullTasks();
-            return Ok(tasks);
+            var tasksDto = _mapper.Map<IEnumerable<CronTaskDto>>(tasks);
+            return Ok(tasksDto);
         }
 
         [HttpGet]
@@ -30,7 +34,8 @@ namespace TaskManager.WebApi.Controllers
             if (username is null) return Unauthorized("You are probably unauthorized");
 
             var tasks = await _context.CronTaskRepository.GetTasksByUsername(username);
-            return Ok(tasks);
+            var tasksDto = _mapper.Map<IEnumerable<CronTaskDto>>(tasks);
+            return Ok(tasksDto);
         }
 
         [Authorize(Roles = "admin")]
@@ -38,7 +43,8 @@ namespace TaskManager.WebApi.Controllers
         public async Task<ActionResult> GetTasksByUserId(int userId)
         {
             var tasks = await _context.CronTaskRepository.GetTasksByUserId(userId);
-            return Ok(tasks);
+            var tasksDto = _mapper.Map<IEnumerable<CronTaskDto>>(tasks);
+            return Ok(tasksDto);
         }
 
         [HttpDelete("{id}")]
@@ -51,23 +57,11 @@ namespace TaskManager.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateTask([FromBody] CronTaskDto taskDto)
         {
-            CronTask cronTask = new()
-            {
-                Name = taskDto.Name,
-                Description = taskDto.Description,
-                Minutes = taskDto.Minutes,
-                Hours = taskDto.Hours,
-                Days = taskDto.Days,
-                Months = taskDto.Months,
-                Weekdays = taskDto.Weekdays,
-                UrlParamsString = taskDto.UrlParamsString,
-                UserId = taskDto.UserId,
-                ApiId = taskDto.ApiId,
-            };
+            CronTask cronTask = _mapper.Map<CronTask>(taskDto);
 
             bool isCreated = await _context.CronTaskRepository.CreateTask(cronTask);
 
-            return isCreated ? Ok() : BadRequest("Could not create object");
+            return isCreated ? CreatedAtAction("CreateTask", null) : BadRequest("Could not create object");
         }
     }
 }

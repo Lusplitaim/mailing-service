@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.WebApi.Controllers
 {
+    [Authorize]
     public class UrlPathsController : BaseApiController
     {
         public DatabaseContext _context;

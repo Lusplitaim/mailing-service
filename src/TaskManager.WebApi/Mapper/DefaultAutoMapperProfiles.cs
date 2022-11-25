@@ -9,7 +9,12 @@ namespace TaskManager.WebApi.Mapper
         public DefaultAutoMapperProfiles()
         {
             CreateMap<AppUser, AppUserDto>()
-            .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.Name));
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.Name));
+            CreateMap<AppUserDto, AppUser>()
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => new Role { Name = src.Role }));
+
+            CreateMap<CronTask, CronTaskDto>();
+            CreateMap<CronTaskDto, CronTask>();
         }
     }
 }
