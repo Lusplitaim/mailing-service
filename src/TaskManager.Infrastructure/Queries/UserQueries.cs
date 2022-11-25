@@ -4,16 +4,19 @@
     {
         public static string AllUsers => @"
             select *
-            from Users;";
+            from Users u
+            join Roles r on r.id = u.roleId;";
 
         public static string GetUserByEmail => @"
             select *
-            from Users
+            from Users u
+            join Roles r on r.id = u.roleId
             where email = @email;";
 
         public static string GetUserByUsername => @"
             select *
-            from Users
+            from Users u
+            join Roles r on r.id = u.roleId
             where username = @username;";
 
         public static string CreateUser => @"

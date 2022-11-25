@@ -29,6 +29,7 @@ namespace TaskManager.WebApi.Controllers
         {
             var httpContext = ControllerContext.HttpContext;
             var username = httpContext.User.Identity?.Name;
+            bool isInRole = httpContext.User.IsInRole("member");
             if (username is null) return Unauthorized("You are probably unauthorized");
 
             var tasks = await _context.CronTaskRepository.GetTasksByUsername(username);

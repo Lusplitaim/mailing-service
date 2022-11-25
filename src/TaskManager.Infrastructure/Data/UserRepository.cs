@@ -37,7 +37,11 @@ namespace TaskManager.Infrastructure.Data
 
             string sql = UserQueries.GetUserByUsername;
 
-            var users = await connection.QueryAsync<AppUser>(sql, new { username });
+            var users = await connection.QueryAsync<AppUser, Role, AppUser>(sql, (user, role) =>
+            {
+                user.Role = role;
+                return user;
+            }, new { username });
 
             return users.FirstOrDefault();
         }
@@ -49,7 +53,11 @@ namespace TaskManager.Infrastructure.Data
 
             string sql = UserQueries.GetUserByEmail;
 
-            var users = await connection.QueryAsync<AppUser>(sql, new { email });
+            var users = await connection.QueryAsync<AppUser, Role, AppUser>(sql, (user, role) =>
+            {
+                user.Role = role;
+                return user;
+            }, new { email });
 
             return users.FirstOrDefault();
         }
@@ -61,7 +69,11 @@ namespace TaskManager.Infrastructure.Data
 
             string sql = UserQueries.AllUsers;
 
-            var users = await connection.QueryAsync<AppUser>(sql);
+            var users = await connection.QueryAsync<AppUser, Role, AppUser>(sql, (user, role) =>
+            {
+                user.Role = role;
+                return user;
+            });
 
             return users;
         }
