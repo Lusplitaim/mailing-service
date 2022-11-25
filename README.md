@@ -10,4 +10,4 @@ Aside from creating tasks, user can delete existing tasks.
 ### App usage stats
 Those who have "admin" privileges can view app usage stats like API usage per user.
 ## Notion
-You can download and use Papercut for safe email tracking.
+You can download and use [Papercut](https://github.com/ChangemakerStudios/Papercut-SMTP) for safe email tracking.
