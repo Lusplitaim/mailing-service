@@ -8,6 +8,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col">Last execution</th>
             <th scope="col">Description</th>
             <th scope="col"></th>
         </tr>
@@ -16,6 +17,7 @@
         <tr *ngFor="let task of tasks">
             <td>{{task.id}}</td>
             <td>{{task.name}}</td>
+            <td>{{task.lastExecuted | date:'medium'}}</td>
             <td>{{task.description}}</td>
             <td><button type="button" class="btn btn-danger btn-sm" (click)="openConfirmationModal(task.id, content)">X</button></td>
         </tr>

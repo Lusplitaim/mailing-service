@@ -7,7 +7,7 @@ using AutoMapper;
 
 namespace TaskManager.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class TasksController : BaseApiController
     {
         DatabaseContext _context;

@@ -11,4 +11,5 @@ export interface CronTask {
     apiId: number;
     urlParamsString: string;
     executionCount: number;
+    lastExecuted?: number;
 }
