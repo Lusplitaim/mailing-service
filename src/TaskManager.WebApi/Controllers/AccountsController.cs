@@ -39,7 +39,8 @@ namespace TaskManager.WebApi.Controllers
                 Id = user.Id,
                 Username = user.Username,
                 Email = user.Email,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                Role = user.Role.Name
             });
         }
 
@@ -68,7 +69,8 @@ namespace TaskManager.WebApi.Controllers
                 Id = createdUser.Id,
                 Username = createdUser.Username,
                 Email = createdUser.Email,
-                Token = _tokenService.CreateToken(createdUser)
+                Token = _tokenService.CreateToken(createdUser),
+                Role = createdUser.Role.Name
             });
         }
 

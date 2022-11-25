@@ -15,6 +15,8 @@ import { HomeComponent } from './home/home.component';
 import { httpInterceptorProviders } from './interceptors';
 import { TaskTableComponent } from './tasks/task-table/task-table.component';
 import { UrlParamsSetupComponent } from './tasks/url-params-setup/url-params-setup.component';
+import { HasRoleDirective } from './directives/has-role.directive';
+import { UsersListComponent } from './admin/users-list/users-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { UrlParamsSetupComponent } from './tasks/url-params-setup/url-params-set
     ToastComponent,
     HomeComponent,
     TaskTableComponent,
-    UrlParamsSetupComponent
+    UrlParamsSetupComponent,
+    HasRoleDirective,
+    UsersListComponent
   ],
   imports: [
     BrowserModule,
