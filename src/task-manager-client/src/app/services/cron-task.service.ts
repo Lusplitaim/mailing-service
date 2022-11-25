@@ -23,6 +23,10 @@ export class CronTaskService {
     return this.http.get<CronTask[]>(`${this.baseApi}/Tasks/GetTasksByUsername`);
   }
 
+  getTasksByUserId(userId: string) {
+    return this.http.get<CronTask[]>(`${this.baseApi}/Tasks/GetTasksByUserId/${userId}`);
+  }
+
   deleteTask(id: number) {
     return this.http.delete<boolean>(`${this.baseApi}/Tasks/DeleteTask/${id}`);
   }

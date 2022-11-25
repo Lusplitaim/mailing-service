@@ -93,5 +93,18 @@ namespace TaskManager.Infrastructure.Data
 
             return rowsAffected == 1 ? true : false;
         }
+
+        public async Task<IEnumerable<CronTask>> GetTasksByUserId(int userId)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
+
+            string sql = CronTaskQueries.GetTasksByUserId;
+
+            IEnumerable<CronTask> tasks = await connection
+                .QueryAsync<CronTask>(sql, new { UserId = userId });
+
+            return tasks;
+        }
     }
 }

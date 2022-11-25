@@ -1,0 +1,28 @@
+<div class="row">
+    <h3 class="col-4">User stats</h3>
+</div>
+<br />
+<div class="row">
+    <h5 class="col-4">API usage</h5>
+</div>
+<table class="table table-striped" *ngIf="tasks && apis">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">API</th>
+            <th scope="col">Uses</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let api of apis">
+            <td>{{api.id}}</td>
+            <td>{{api.name}}</td>
+            <td>{{getApiUseCount(api.id)}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>{{getTotalApiUseCount()}}</td>
+        </tr>
+    </tbody>
+</table>

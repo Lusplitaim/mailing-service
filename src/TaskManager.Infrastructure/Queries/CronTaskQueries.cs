@@ -10,10 +10,16 @@
             select * from Tasks;";
 
         public static string GetTasksByUsername => @"
-            select t.id, t.name, t.description, t.minutes, t.hours, t.days, t.months, t.weekdays, t.userId, t.apiId
+            select t.id, t.name, t.description, t.minutes, t.hours, t.days, t.months, t.weekdays, t.userId, t.apiId, t.lastExecuted, t.urlParamsString, t.executionCount
             from Tasks t
             join Users u on u.id = t.userId
             where @Username = u.username;";
+
+        public static string GetTasksByUserId => @"
+            select t.id, t.name, t.description, t.minutes, t.hours, t.days, t.months, t.weekdays, t.userId, t.apiId, t.lastExecuted, t.urlParamsString, t.executionCount
+            from Tasks t
+            join Users u on u.id = t.userId
+            where @UserId = u.id;";
 
         public static string GetFullTasks => @"
             select * from Tasks t

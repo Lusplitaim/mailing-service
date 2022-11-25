@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserStatComponent } from './admin/user-stat/user-stat.component';
 import { UsersListComponent } from './admin/users-list/users-list.component';
 import { HomeComponent } from './home/home.component';
 import { SignInComponent } from './registration/sign-in/sign-in.component';
@@ -10,6 +11,7 @@ import { TaskTableComponent } from './tasks/task-table/task-table.component';
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'users', component: UsersListComponent},
+  {path: 'users/stat/:userId', component: UserStatComponent},
   {path: 'task/create', component: TaskCreationComponent},
   {path: 'tasks', component: TaskTableComponent},
   {path: 'signup', component: SignUpComponent},

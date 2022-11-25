@@ -17,6 +17,7 @@ import { TaskTableComponent } from './tasks/task-table/task-table.component';
 import { UrlParamsSetupComponent } from './tasks/url-params-setup/url-params-setup.component';
 import { HasRoleDirective } from './directives/has-role.directive';
 import { UsersListComponent } from './admin/users-list/users-list.component';
+import { UserStatComponent } from './admin/user-stat/user-stat.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { UsersListComponent } from './admin/users-list/users-list.component';
     TaskTableComponent,
     UrlParamsSetupComponent,
     HasRoleDirective,
-    UsersListComponent
+    UsersListComponent,
+    UserStatComponent
   ],
   imports: [
     BrowserModule,
