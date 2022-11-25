@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TaskManager.Core.Models;
 using TaskManager.Infrastructure.Data;
 using TaskManager.Scheduler.ApiHandlers;
@@ -40,7 +41,7 @@ public class Worker : BackgroundService
             });
             task.Start();
 
-            await Task.Delay(10000, stoppingToken);
+            await Task.Delay(60000, stoppingToken);
         }
     }
 
@@ -100,18 +101,13 @@ public class Worker : BackgroundService
     private async Task ManageCronTaskExecution()
     {
         var tasks = await _context.CronTaskRepository.GetFullTasks();
+        var tasksForExecution = tasks.Where(t => ShouldExecuteTaskNow(t));
 
-        foreach (var task in tasks)
+        Parallel.ForEach(tasksForExecution, new ParallelOptions { MaxDegreeOfParallelism = 10 }, 
+        async (task) =>
         {
-            if (ShouldExecuteTaskNow(task))
-            {
-                var scheduledTask = new Task(async () =>
-                {
-                    await ExecuteCronTask(task);
-                });
-                scheduledTask.Start();
-            }
-        }
+            await ExecuteCronTask(task);
+        });
     }
 
     private bool ShouldExecuteTaskNow(CronTask task)
@@ -135,6 +131,6 @@ public class Worker : BackgroundService
         }
         catch (HttpRequestException ex) { }
 
-        bool execDateUpdated = await _context.CronTaskRepository.UpdateExecutionDate(task, DateTime.Now);
+        await _context.CronTaskRepository.UpdateExecutionDate(task, DateTime.Now);
     }
 }
