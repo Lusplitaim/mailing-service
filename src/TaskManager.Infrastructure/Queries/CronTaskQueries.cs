@@ -23,5 +23,10 @@
         public static string DeleteTask => @"
             delete from Tasks
             where id = @Id";
+
+        public static string UpdateExecutionDate => @"
+            update Tasks
+            set lastExecuted = @LastExecuted
+            where id = @Id;";
     }
 }

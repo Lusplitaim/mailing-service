@@ -13,6 +13,7 @@ namespace TaskManager.Core.Models
         public string Months { get; set; }
         public string Weekdays { get; set; }
         public string? UrlParamsString { get; set; }
+        public DateTime? LastExecuted { get; set; }
         public int UserId { get; set; }
         public int ApiId { get; set; }
         public TaskApi Api { get; set; }

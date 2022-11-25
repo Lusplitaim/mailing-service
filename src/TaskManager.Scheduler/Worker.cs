@@ -134,5 +134,7 @@ public class Worker : BackgroundService
             await apiHandler!.InvokeAsync();
         }
         catch (HttpRequestException ex) { }
+
+        bool execDateUpdated = await _context.CronTaskRepository.UpdateExecutionDate(task, DateTime.Now);
     }
 }
