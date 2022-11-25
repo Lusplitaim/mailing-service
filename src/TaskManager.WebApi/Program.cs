@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskManager.Infrastructure.Data;
 using TaskManager.WebApi.Interfaces;
+using TaskManager.WebApi.Mapper;
 using TaskManager.WebApi.Services;
 
 internal class Program
@@ -38,6 +39,7 @@ internal class Program
             string connectionString = string.Format("Data Source={0};", config["DatabasePath"]);
             return new DatabaseContext(connectionString);
         });
+        builder.Services.AddAutoMapper(typeof(DefaultAutoMapperProfiles));
         builder.Services.AddScoped<ITokenService, TokenService>();
 
         var app = builder.Build();

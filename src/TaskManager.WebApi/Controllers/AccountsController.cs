@@ -20,7 +20,7 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> SignIn([FromBody] SignInUserDto signInDto)
+        public async Task<ActionResult<AppUserDto>> SignIn([FromBody] SignInUserDto signInDto)
         {
             AppUser? user = await _context.UserRepository.GetUserByEmail(signInDto.Email);
             if (user is null) return Unauthorized("No user with such email");
@@ -34,7 +34,7 @@ namespace TaskManager.WebApi.Controllers
                 return Unauthorized("Wrong password");
             }
 
-            return Ok(new UserDto
+            return Ok(new AppUserDto
             {
                 Id = user.Id,
                 Username = user.Username,
@@ -44,7 +44,7 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> SignUp([FromBody] SignUpUserDto signUpDto)
+        public async Task<ActionResult<AppUserDto>> SignUp([FromBody] SignUpUserDto signUpDto)
         {
             if (await UsernameExists(signUpDto.Username) || await EmailExists(signUpDto.Email))
             {
@@ -63,7 +63,7 @@ namespace TaskManager.WebApi.Controllers
 
             AppUser createdUser = await _context.UserRepository.CreateUser(user);
 
-            return Ok(new UserDto
+            return Ok(new AppUserDto
             {
                 Id = createdUser.Id,
                 Username = createdUser.Username,
