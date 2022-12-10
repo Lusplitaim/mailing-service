@@ -30,15 +30,11 @@ export class UrlParamsSetupComponent implements OnInit {
     return this.paramsForm.controls["params"] as FormArray;
   }
 
-  clearParams() {
-    (this.paramsForm.controls["params"] as FormArray).clear();
-  }
-
   ngOnInit(): void {
   }
 
   open() {
-    this.clearParams();
+    this.params.clear();
     if (this.urlParams) {
       for (let urlParam of this.urlParams) {
         this.addParam(urlParam);
@@ -63,7 +59,7 @@ export class UrlParamsSetupComponent implements OnInit {
 
   createQueryString(): string {
     let filledParams: string[] = [];
-    const urlParams = this.paramsForm.value['params'] as { name: string, value: string }[];
+    const urlParams = this.params.value as { name: string, value: string }[];
     for (const urlParam of urlParams) {
       if (urlParam.value) filledParams.push(`${urlParam.name}=${urlParam.value}`);
     }
